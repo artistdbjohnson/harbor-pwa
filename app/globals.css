@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 2026 Cool Blue + porcelain white
+   Pinterest Cool Blue / WGSN oceanic ice.
+   Class names brown/clay/moss kept so existing TSX compiles. */
+
+:root {
+  --ink: #0b1f3a;
+  --paper: #f5f8fc;
+  --fog: #e6eef8;
+  --moss: #1565ff;
+  --clay: #b8dcff;
+  --alert: #b42318;
+  --mute: #3d5a80;
+  --brown: #0b1f3a;
+  --brown-deep: #062056;
+  --teal: #0ea5e9;
+  --font-display: "Poppins", system-ui, sans-serif;
+  --font-cond: "Roboto Condensed", system-ui, sans-serif;
+  --font-body: "Roboto", system-ui, sans-serif;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  min-height: 100%;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.font-cond {
+  font-family: var(--font-cond);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--moss);
+  outline-offset: 3px;
+}
+
+.cta-grad {
+  background: linear-gradient(90deg, #4da3ff 0%, #1565ff 100%);
+  color: #0b1f3a;
+}
+
+.hero-box {
+  border: 4px solid #1565ff;
+  display: inline-block;
+  padding: 0.15em 0.2em 0.05em;
+  line-height: 0.86;
+}
+
+.bubble {
+  background: #0b1f3a;
+  color: #b8dcff;
+  border: 3px solid #b8dcff;
+  border-radius: 4px 18px 18px 18px;
+}
+
+body {
+  background-image:
+    radial-gradient(1200px 600px at 12% -10%, rgba(184, 220, 255, 0.55), transparent 60%),
+    radial-gradient(900px 500px at 110% 8%, rgba(21, 101, 255, 0.12), transparent 55%);
+}
+
+.ink-glass,
+.liquid-glass,
+.liquid-glass-strong,
+.liquid-glass-dark,
+.glass-nav,
+.glass-pill {
+  position: relative;
+  overflow: hidden;
+  background-blend-mode: luminosity;
+}
+
+.liquid-glass,
+.ink-glass {
+  background: rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  box-shadow:
+    0 8px 32px rgba(11, 31, 58, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.72);
+}
+
+.liquid-glass-strong {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(50px) saturate(180%);
+  -webkit-backdrop-filter: blur(50px) saturate(180%);
+  box-shadow:
+    4px 4px 24px rgba(11, 31, 58, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.55);
+}
+
+.liquid-glass-dark {
+  background: rgba(11, 31, 58, 0.28);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  box-shadow:
+    0 10px 40px rgba(4, 21, 54, 0.28),
+    inset 0 1px 1px rgba(184, 220, 255, 0.28);
+  color: #b8dcff;
+}
+
+.glass-nav {
+  background: rgba(245, 248, 252, 0.22);
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.45);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  color: #0b1f3a;
+}
+
+.glass-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  overflow: visible;
+  background: rgba(11, 31, 58, 0.84);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+}
+
+.liquid-glass::before,
+.liquid-glass-strong::before,
+.liquid-glass-dark::before,
+.glass-nav::before,
+.glass-pill::before,
+.ink-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(184, 220, 255, 0.35) 18%,
+    rgba(255, 255, 255, 0) 42%,
+    rgba(255, 255, 255, 0) 62%,
+    rgba(21, 101, 255, 0.28) 82%,
+    rgba(255, 255, 255, 0.5) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.liquid-glass-dark::before {
+  background: linear-gradient(
+    180deg,
+    rgba(184, 220, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.12) 22%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(21, 101, 255, 0.35) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Hope act — porcelain field, ice rims. No gold sunrise. */
+.hope-kicker {
+  border: 4px solid #1565ff;
+  display: inline-block;
+  padding: 0.12em 0.22em 0.04em;
+  line-height: 0.86;
+  color: #0b1f3a;
+}
+
+.hope-card {
+  position: relative;
+  overflow: hidden;
+  background: #e6eef8;
+}
+
+.hope-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hope-cap {
+  position: absolute;
+  left: 0.6rem;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  background: rgba(245, 248, 252, 0.72);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  color: #0b1f3a;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
