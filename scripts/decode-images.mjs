@@ -10,18 +10,19 @@ function walkFiles(dir, acc = []) {
   return acc;
 }
 
+function hasJpegSoi(buf) {
+  return Buffer.isBuffer(buf) && buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff;
+}
+
+function hasJpegEoi(buf) {
+  return Buffer.isBuffer(buf) && buf.length >= 2 && buf[buf.length - 2] === 0xff && buf[buf.length - 1] === 0xd9;
+}
+
 function isCompleteImage(buf, outPath) {
   if (!Buffer.isBuffer(buf) || buf.length < 32) return false;
   const lower = String(outPath).toLowerCase();
   if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) {
-    return (
-      buf.length > 1024 &&
-      buf[0] === 0xff &&
-      buf[1] === 0xd8 &&
-      buf[2] === 0xff &&
-      buf[buf.length - 2] === 0xff &&
-      buf[buf.length - 1] === 0xd9
-    );
+    return buf.length > 1024 && hasJpegSoi(buf) && hasJpegEoi(buf);
   }
   if (lower.endsWith(".png")) {
     return (
@@ -74,8 +75,13 @@ for (const [out, parts] of groups) {
     console.log("skip-chunks-gap", out, parts.length);
     continue;
   }
-  const b64 = parts.map((p) => readFileSync(p, "utf8")).join("");
-  const buf = decodeB64(b64);
+  let buf;
+  try {
+    buf = decodeB64(parts.map((p) => readFileSync(p, "utf8")).join(""));
+  } catch (err) {
+    console.log("skip-chunks-decode-error", out, String(err));
+    continue;
+  }
   if (!isCompleteImage(buf, out)) {
     console.log(
       "skip-chunks-invalid-image",
@@ -99,11 +105,28 @@ for (const full of files) {
     console.log("skip-single", full, "(chunks win)");
     continue;
   }
-  const buf = decodeB64(readFileSync(full, "utf8"));
-  if (!isCompleteImage(buf, out)) {
-    console.log("skip-single-invalid-image", full, buf.length);
+  let buf;
+  try {
+    buf = decodeB64(readFileSync(full, "utf8"));
+  } catch (err) {
+    console.log("skip-single-decode-error", full, String(err));
     continue;
   }
-  writeFileSync(out, buf);
-  console.log("decoded", full, buf.length, "->", out);
+  if (isCompleteImage(buf, out)) {
+    writeFileSync(out, buf);
+    console.log("decoded", full, buf.length, "->", out);
+    continue;
+  }
+  const lower = String(out).toLowerCase();
+  if ((lower.endsWith(".jpg") || lower.endsWith(".jpeg")) && hasJpegSoi(buf) && buf.length > 512) {
+    writeFileSync(out, buf);
+    console.log("decoded-degraded-jpeg", full, buf.length, "->", out);
+    continue;
+  }
+  if (lower.endsWith(".png") && buf[0] === 0x89 && buf[1] === 0x50 && buf.length > 32) {
+    writeFileSync(out, buf);
+    console.log("decoded-degraded-png", full, buf.length, "->", out);
+    continue;
+  }
+  console.log("skip-single-invalid-image", full, buf.length);
 }
