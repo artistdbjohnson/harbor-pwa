@@ -7,3 +7,5 @@ out
 .env*
 
 public/plate-hero.mp4
+public/*.jpg
+public/icons/*.png
