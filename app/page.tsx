@@ -117,7 +117,7 @@ export default function HomePage() {
         <figure className="mx-auto mt-8 max-w-5xl overflow-hidden">
           <img
             src="/campaign-light.jpg"
-            alt="A child running toward a parent at ice dawn. Light at the end."
+            alt="A parent and child sitting on a dock at blue hour, fishing lines over still water."
             className="h-[42vh] w-full object-cover object-center sm:h-[48vh]"
           />
         </figure>
