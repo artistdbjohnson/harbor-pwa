@@ -234,3 +234,186 @@ body {
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+
+/* Hope cinematic slideshow — liquid glass caption, no chip labels */
+.hope-show {
+  background: #f5f8fc;
+  color: #0b1f3a;
+}
+
+.hope-show-intro {
+  padding: 3rem 1.25rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .hope-show-intro {
+    padding: 3.5rem 2rem 1.5rem;
+  }
+}
+
+.hope-show-stage {
+  position: relative;
+  height: 72vh;
+  min-height: 28rem;
+  max-height: 52rem;
+  overflow: hidden;
+  background: #041536;
+}
+
+.hope-show-frame {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+}
+
+.hope-show-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  will-change: transform;
+}
+
+.hope-show-veil {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 21, 54, 0.08) 0%,
+    rgba(4, 21, 54, 0) 38%,
+    rgba(4, 21, 54, 0.45) 100%
+  );
+  pointer-events: none;
+}
+
+.hope-slide-glass {
+  position: absolute;
+  z-index: 2;
+  overflow: hidden;
+  left: 1rem;
+  right: auto;
+  bottom: 4.25rem;
+  max-width: min(28rem, calc(100% - 2rem));
+  padding: 0.9rem 1.05rem 0.95rem;
+  border-radius: 18px;
+  background: rgba(245, 248, 252, 0.22);
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -1px 0 rgba(184, 220, 255, 0.18),
+    0 10px 28px rgba(4, 21, 54, 0.22);
+  color: #f5f8fc;
+}
+
+.hope-slide-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.2px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(184, 220, 255, 0.28) 24%,
+    rgba(255, 255, 255, 0) 48%,
+    rgba(21, 101, 255, 0.28) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.hope-show-line {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 12px rgba(4, 21, 54, 0.35);
+}
+
+.hope-show-quiet {
+  position: relative;
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: rgba(245, 248, 252, 0.82);
+}
+
+.hope-show-chrome {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 1rem;
+}
+
+.hope-show-btn {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  background: rgba(245, 248, 252, 0.2);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  color: #f5f8fc;
+  font-size: 1.4rem;
+  line-height: 1;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.hope-slide-dots {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.35rem 0.45rem;
+  list-style: none;
+  border-radius: 999px;
+  background: rgba(245, 248, 252, 0.16);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+.hope-slide-dot {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 999px;
+  background: rgba(245, 248, 252, 0.45);
+}
+
+.hope-slide-dot.is-on {
+  background: #0b1f3a;
+  box-shadow: 0 0 0 1px rgba(245, 248, 252, 0.7);
+}
+
+@media (min-width: 640px) {
+  .hope-show-stage {
+    height: 82vh;
+  }
+  .hope-slide-glass {
+    left: 1.5rem;
+    bottom: 4.5rem;
+    padding: 1.1rem 1.25rem 1.15rem;
+  }
+  .hope-show-line {
+    font-size: 1.45rem;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .hope-slide-glass,
+  .hope-show-btn,
+  .hope-slide-dots {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(11, 31, 58, 0.88);
+  }
+}
