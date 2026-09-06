@@ -8,7 +8,7 @@ export default function Footer() {
   if (pathname === '/plate' || pathname?.startsWith('/plate/')) return null;
 
   return (
-    <footer className="bg-ink text-paper/80 mt-0">
+    <footer className="bg-ink text-paper/80 mt-0 border-t border-clay/25">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14 grid gap-10 md:grid-cols-3">
         <div>
           <p className="font-display text-2xl text-paper">Harbor</p>

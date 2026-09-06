@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
+import { HopeSlideshow } from "@/components/HopeSlideshow";
 
 const ZONES = [
   { t: "Mood and sleep", src: "/zones/mood.svg", pos: "col-start-1 row-start-1" },
@@ -9,15 +10,47 @@ const ZONES = [
   { t: "What is real", src: "/zones/real.svg", pos: "col-start-3 row-start-3" },
 ];
 
-const FUTURE = [
-  { t: "Tee-ball Saturdays", src: "/campaign-teeball.jpg", alt: "A child at tee-ball dusk. A parent on the sideline. Ordinary and enormous." },
-  { t: "Recital wings", src: "/campaign-ballet.jpg", alt: "Recital wings. A mother tying a slipper. Pride, not performance." },
-  { t: "School-play bow", src: "/campaign-play.jpg", alt: "School-play bow. A parent in the aisle with flowers." },
-  { t: "Good grades", src: "/campaign-grades.jpg", alt: "Kitchen table homework. A report card on the fridge." },
-  { t: "Blue-hour dock", src: "/campaign-fishing.jpg", alt: "Blue-hour dock. A kid and a parent fishing. Quiet on purpose." },
-  { t: "The hug", src: "/campaign-grad-hs.jpg", alt: "High-school graduation parking lot. The hug is the headline." },
-  { t: "Years-later table", src: "/campaign-table.jpg", alt: "Years-later dinner. The baby is a kid passing a plate." },
-  { t: "Commencement", src: "/campaign-grad-college.jpg", alt: "Campus lawn after commencement. A parent holding the program." },
+const HOPE_SLIDES = [
+  {
+    src: "/campaign-teeball.jpg",
+    alt: "A child at a tee at dusk. A parent stands back on the field.",
+    line: "The sideline is the prize.",
+  },
+  {
+    src: "/campaign-ballet.jpg",
+    alt: "A mother kneeling to tie a child’s ballet slipper before the recital.",
+    line: "The shoe first. The stage later.",
+  },
+  {
+    src: "/campaign-play.jpg",
+    alt: "A parent in the school-play aisle, flowers in hand.",
+    line: "Flowers in the aisle. That is enough.",
+  },
+  {
+    src: "/campaign-grades.jpg",
+    alt: "Kitchen table homework under a pendant lamp.",
+    line: "She is in the chair.",
+  },
+  {
+    src: "/campaign-fishing.jpg",
+    alt: "A parent and child on a dock at blue hour, lines over still water.",
+    line: "No one has to talk.",
+  },
+  {
+    src: "/campaign-grad-hs.jpg",
+    alt: "High-school graduation parking lot. The hug is the headline.",
+    line: "The parking lot is the ceremony.",
+  },
+  {
+    src: "/campaign-table.jpg",
+    alt: "Years-later dinner. The baby is a kid passing a plate.",
+    line: "Tuesday dinner. That is the future.",
+  },
+  {
+    src: "/campaign-grad-college.jpg",
+    alt: "Campus lawn after commencement. A parent holding the program.",
+    line: "The program in her hand is the proof.",
+  },
 ];
 
 export default function HomePage() {
@@ -107,29 +140,11 @@ export default function HomePage() {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1565FF] via-[#1565FF]/20 to-transparent" />
       </section>
 
-      <section className="bg-[#F5F8FC] px-5 py-12 text-[#0B1F3A] sm:px-8">
-        <p className="hope-kicker font-display text-4xl uppercase tracking-tight sm:text-6xl">
-          There is a light.
-        </p>
-        <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#3D5A80]">
-          Treatment works. The years after this night are supposed to be ordinary and good.
-        </p>
-        <figure className="mx-auto mt-8 max-w-5xl overflow-hidden">
-          <img
-            src="/campaign-light.jpg"
-            alt="A parent and child sitting on a dock at blue hour, fishing lines over still water."
-            className="h-[42vh] w-full object-cover object-center sm:h-[48vh]"
-          />
-        </figure>
-        <div className="mx-auto mt-6 grid max-w-5xl grid-cols-2 gap-3 sm:grid-cols-4">
-          {FUTURE.map((f) => (
-            <figure key={f.t} className="hope-card aspect-[4/5] sm:aspect-[3/4]">
-              <img src={f.src} alt={f.alt} className="h-full w-full object-cover" />
-              <figcaption className="hope-cap">{f.t}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
+      <HopeSlideshow
+        kicker="There is a light."
+        sub="Treatment works. The years after this night are supposed to be ordinary and good."
+        slides={HOPE_SLIDES}
+      />
 
       <section className="relative bg-[#0B1F3A]">
         <img
