@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, statSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
 function walkFiles(dir, acc = []) {
@@ -36,6 +36,12 @@ function isCompleteImage(buf, outPath) {
   return buf.length > 16;
 }
 
+const MIN_GOOD_JPEG = 40000;
+
+function isGoodJpeg(buf) {
+  return isCompleteImage(buf, "x.jpg") && buf.length >= MIN_GOOD_JPEG;
+}
+
 function decodeB64(text) {
   return Buffer.from(String(text).replace(/\s+/g, ""), "base64");
 }
@@ -55,6 +61,15 @@ function chunksAreContiguous(parts) {
     }
   }
   return suffixes.every((s, i) => s === expected[i]);
+}
+
+function readExisting(path) {
+  try {
+    if (!existsSync(path)) return null;
+    return readFileSync(path);
+  } catch {
+    return null;
+  }
 }
 
 const publicDir = join(process.cwd(), "public");
@@ -83,14 +98,7 @@ for (const [out, parts] of groups) {
     continue;
   }
   if (!isCompleteImage(buf, out)) {
-    console.log(
-      "skip-chunks-invalid-image",
-      out,
-      "parts",
-      parts.length,
-      "bytes",
-      buf.length
-    );
+    console.log("skip-chunks-invalid-image", out, "parts", parts.length, "bytes", buf.length);
     continue;
   }
   writeFileSync(out, buf);
@@ -130,3 +138,47 @@ for (const full of files) {
   }
   console.log("skip-single-invalid-image", full, buf.length);
 }
+
+const REMOTE_STILLS = {
+  "campaign-hero.jpg": "https://litter.catbox.moe/4qpxbq.jpg",
+  "campaign-mid.jpg": "https://litter.catbox.moe/k60xkb.jpg",
+  "campaign-light.jpg": "https://litter.catbox.moe/koc2iq.jpg",
+  "campaign-future.jpg": "https://litter.catbox.moe/nd65pk.jpg",
+  "campaign-fishing.jpg": "https://litter.catbox.moe/3ffj6g.jpg",
+  "campaign-grad-hs.jpg": "https://litter.catbox.moe/2oltkw.jpg",
+  "campaign-grades.jpg": "https://litter.catbox.moe/ruxsea.jpg",
+  "campaign-grad-college.jpg": "https://litter.catbox.moe/1rjxfs.jpg",
+  "campaign-play.jpg": "https://litter.catbox.moe/ms4n55.jpg",
+  "campaign-table.jpg": "https://litter.catbox.moe/ky45a6.jpg",
+  "campaign-ballet.jpg": "https://litter.catbox.moe/r1zmgo.jpg",
+  "campaign-teeball.jpg": "https://litter.catbox.moe/xf5fdj.jpg",
+};
+
+async function hydrateFromRemote() {
+  for (const [name, url] of Object.entries(REMOTE_STILLS)) {
+    const out = join(publicDir, name);
+    const existing = readExisting(out);
+    if (existing && isGoodJpeg(existing)) {
+      console.log("keep-good-local", name, existing.length);
+      continue;
+    }
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        console.log("remote-fetch-fail", name, res.status);
+        continue;
+      }
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (!isGoodJpeg(buf)) {
+        console.log("remote-fetch-invalid", name, buf.length);
+        continue;
+      }
+      writeFileSync(out, buf);
+      console.log("hydrated-remote", name, buf.length, "<-", url);
+    } catch (err) {
+      console.log("remote-fetch-error", name, String(err));
+    }
+  }
+}
+
+await hydrateFromRemote();
